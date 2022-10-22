@@ -1,0 +1,136 @@
+package view;
+
+import javax.swing.JPanel;
+import javax.swing.Box;
+import javax.swing.border.LineBorder;
+
+import model.DisplacementEncoding;
+import model.Model;
+
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+public class MaHoaDichChuyen extends JPanel {
+	private JTextField textField;
+	private DisplacementEncoding displaceModel;
+
+	/**
+	 * Create the panel.
+	 */
+	public MaHoaDichChuyen() {
+
+		Box verticalBox_4 = Box.createVerticalBox();
+		add(verticalBox_4);
+
+		JLabel lblNewLabel_5 = new JLabel("Mã hóa dịch chuyển");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		lblNewLabel_5.setAlignmentX(Component.CENTER_ALIGNMENT);
+		verticalBox_4.add(lblNewLabel_5);
+
+		Box horizontalBox = Box.createHorizontalBox();
+		verticalBox_4.add(horizontalBox);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		horizontalBox.add(panel_3);
+
+		Box verticalBox_1 = Box.createVerticalBox();
+		panel_3.add(verticalBox_1);
+
+		JLabel lblNewLabel_4 = new JLabel("Key");
+		verticalBox_1.add(lblNewLabel_4);
+
+		Box horizontalBox_1 = Box.createHorizontalBox();
+		verticalBox_1.add(horizontalBox_1);
+
+		JLabel lblNewLabel_3 = new JLabel("Key (Number): ");
+		horizontalBox_1.add(lblNewLabel_3);
+
+		textField = new JTextField();
+		textField.setColumns(10);
+		horizontalBox_1.add(textField);
+
+		Box horizontalBox_2 = Box.createHorizontalBox();
+		verticalBox_1.add(horizontalBox_2);
+
+		JButton btnNewButton = new JButton("Random key");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				displaceModel = new DisplacementEncoding();
+				textField.setText(String.valueOf(displaceModel.createKey()));
+			}
+		});
+		horizontalBox_2.add(btnNewButton);
+
+		JButton btnNewButton_1 = new JButton("Self-entered key");
+		horizontalBox_2.add(btnNewButton_1);
+
+		JButton btnNewButton_2 = new JButton("Key in file");
+		horizontalBox_2.add(btnNewButton_2);
+
+		JButton btnNewButton_3 = new JButton("Enter");
+		btnNewButton_3.setAlignmentX(0.5f);
+		verticalBox_1.add(btnNewButton_3);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		horizontalBox.add(panel);
+
+		Box verticalBox = Box.createVerticalBox();
+		panel.add(verticalBox);
+
+		JLabel lblNewLabel = new JLabel("Input");
+		lblNewLabel.setAlignmentX(0.5f);
+		verticalBox.add(lblNewLabel);
+
+		JTextArea textArea = new JTextArea();
+		textArea.setRows(10);
+		textArea.setLineWrap(true);
+		textArea.setColumns(20);
+		verticalBox.add(textArea);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		horizontalBox.add(panel_1);
+
+		Box verticalBox_2 = Box.createVerticalBox();
+		panel_1.add(verticalBox_2);
+
+		JLabel lblNewLabel_1 = new JLabel("Encrypt");
+		lblNewLabel_1.setAlignmentX(0.5f);
+		verticalBox_2.add(lblNewLabel_1);
+
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setRows(10);
+		textArea_1.setEditable(false);
+		textArea_1.setColumns(20);
+		verticalBox_2.add(textArea_1);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		horizontalBox.add(panel_2);
+
+		Box verticalBox_3 = Box.createVerticalBox();
+		panel_2.add(verticalBox_3);
+
+		JLabel lblNewLabel_2 = new JLabel("Decrypt");
+		lblNewLabel_2.setAlignmentX(0.5f);
+		verticalBox_3.add(lblNewLabel_2);
+
+		JTextArea textArea_2 = new JTextArea();
+		textArea_2.setRows(10);
+		textArea_2.setEditable(false);
+		textArea_2.setColumns(20);
+		verticalBox_3.add(textArea_2);
+
+	}
+
+}

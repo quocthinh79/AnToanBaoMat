@@ -1,0 +1,191 @@
+package view;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.Box;
+import javax.swing.border.LineBorder;
+
+import model.DisplacementEncoding;
+import model.Model;
+import project.FileChooserTest;
+
+import java.awt.Color;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
+import javax.swing.border.BevelBorder;
+
+public class MaHoaDichChuyen extends JPanel {
+	private DisplacementEncoding displaceModel;
+	private JTextField textField;
+
+	/**
+	 * Create the panel.
+	 */
+	public MaHoaDichChuyen() {
+		setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel.setBounds(10, 54, 289, 319);
+		add(panel);
+		panel.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("Key (Number)");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setBounds(10, 11, 86, 42);
+		panel.add(lblNewLabel);
+
+		textField = new JTextField();
+		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		textField.setBounds(106, 16, 173, 37);
+		panel.add(textField);
+		textField.setColumns(10);
+
+		JButton btnNewButton_1 = new JButton("Random key");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textField.setText(String.valueOf(displaceModel.createKey()));
+			}
+		});
+		btnNewButton_1.setBounds(90, 80, 113, 23);
+		panel.add(btnNewButton_1);
+
+		JButton btnNewButton_1_1 = new JButton("Key in file");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int rVal = fileChooser.showOpenDialog(MaHoaDichChuyen.this);
+				if (rVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						File file = fileChooser.getSelectedFile();
+						BufferedReader in = new BufferedReader(new FileReader(file));
+						String line = in.readLine();
+						while (line != null) {
+							textField.setText(textField.getText() + "\n" + line);
+							line = in.readLine();
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+				}
+			}
+		});
+		btnNewButton_1_1.setBounds(90, 162, 113, 23);
+		panel.add(btnNewButton_1_1);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_1.setBounds(312, 54, 289, 319);
+		add(panel_1);
+		panel_1.setLayout(null);
+
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(10, 35, 269, 243);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		JScrollPane scroll = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+		panel_1.add(scroll);
+		panel_1.add(textArea);
+
+		JButton btnNewButton_2 = new JButton("From file");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int rVal = fileChooser.showOpenDialog(MaHoaDichChuyen.this);
+				if (rVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						File file = fileChooser.getSelectedFile();
+						BufferedReader in = new BufferedReader(new FileReader(file));
+						String line = in.readLine();
+						while (line != null) {
+							textArea.setText(textArea.getText() + "\n" + line);
+							line = in.readLine();
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+				}
+			}
+		});
+		btnNewButton_2.setBounds(101, 285, 89, 23);
+		panel_1.add(btnNewButton_2);
+
+		JLabel lblNewLabel_2 = new JLabel("Input");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_2.setBounds(128, 11, 34, 13);
+		panel_1.add(lblNewLabel_2);
+
+		JPanel panel_1_1 = new JPanel();
+		panel_1_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_1_1.setBounds(608, 54, 289, 319);
+		add(panel_1_1);
+		panel_1_1.setLayout(null);
+
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setBounds(10, 35, 269, 273);
+		panel_1_1.add(textArea_1);
+
+		JLabel lblNewLabel_2_1 = new JLabel("Encrypt");
+		lblNewLabel_2_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_2_1.setBounds(125, 11, 42, 13);
+		panel_1_1.add(lblNewLabel_2_1);
+
+		JPanel panel_1_1_1 = new JPanel();
+		panel_1_1_1.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		panel_1_1_1.setBounds(905, 54, 289, 319);
+		add(panel_1_1_1);
+		panel_1_1_1.setLayout(null);
+
+		JTextArea textArea_1_1 = new JTextArea();
+		textArea_1_1.setBounds(10, 35, 269, 273);
+		panel_1_1_1.add(textArea_1_1);
+
+		JLabel lblNewLabel_2_1_1 = new JLabel("Decypt");
+		lblNewLabel_2_1_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
+		lblNewLabel_2_1_1.setBounds(129, 11, 38, 13);
+		panel_1_1_1.add(lblNewLabel_2_1_1);
+
+		JButton btnNewButton = new JButton("Encrypt");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea_1.setText(String
+						.valueOf(displaceModel.encrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+			}
+		});
+		btnNewButton.setBounds(512, 384, 89, 23);
+		add(btnNewButton);
+
+		JLabel lblNewLabel_1 = new JLabel("Mã hóa dịch chuyển");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel_1.setBounds(536, 11, 146, 32);
+		add(lblNewLabel_1);
+
+		JButton btnDecrypt = new JButton("Decrypt");
+		btnDecrypt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textArea_1_1.setText(String
+						.valueOf(displaceModel.decrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+			}
+		});
+		btnDecrypt.setBounds(611, 384, 89, 23);
+		add(btnDecrypt);
+
+	}
+}
