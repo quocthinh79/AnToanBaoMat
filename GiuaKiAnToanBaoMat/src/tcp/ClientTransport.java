@@ -30,98 +30,57 @@ import model.RSA;
 public class ClientTransport {
 
 	public static void main(String[] args) throws Exception {
-		int errorCode = -1;
+		handleInClient("E:\\ATBM\\Client\\LeQuocThinh_CV.pdf", "UPLOAD");
+	}
+
+	public static void handleInClient(String pathSourcefile, String options) throws Exception {
+		// TODO Auto-generated method stub
 		Socket sk = new Socket("127.0.0.1", ServerTransport.PORT);
 		DataInputStream dis = new DataInputStream(sk.getInputStream());
 		DataOutputStream dos = new DataOutputStream(sk.getOutputStream());
 		System.out.println(dis.readUTF());
-		String publicKeyInString = dis.readUTF();
-		byte[] data = Base64.getDecoder().decode((publicKeyInString.getBytes()));
-		X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
-		KeyFactory fact = KeyFactory.getInstance("RSA");
-		PublicKey publicKey = fact.generatePublic(spec);
-		System.out.println(publicKey);
-		DESCipher des = new DESCipher();
-		des.createKey();
-		SecretKey keyOfDes = des.getKey();
-		System.out.println(keyOfDes);
-		RSA rsa = new RSA();
-		String keyOfDesToString = Base64.getEncoder()
-				.encodeToString(rsa.encryptByteArr(keyOfDes.getEncoded(), publicKey));
-		dos.writeUTF(keyOfDesToString);
-		des.encryptFile("E:\\ATBM\\Client\\LeQuocThinh_CV.pdf", "E:\\ATBM\\Client\\LeQuocThinh_CV_Encrypt.pdf", keyOfDes);
-		File fileSource = new File("E:\\ATBM\\Client\\LeQuocThinh_CV_Encrypt.pdf");
-		BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileSource));
-		dos.writeLong(fileSource.length());
-		dos.flush();
-		int dataFile;
-		while ((dataFile = bis.read()) != -1) {
-			dos.write(dataFile);
+		switch (options) {
+		case "UPLOAD": {
+			dos.writeUTF("UPLOAD");
+			String publicKeyInString = dis.readUTF();
+			byte[] data = Base64.getDecoder().decode((publicKeyInString.getBytes()));
+			X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
+			KeyFactory fact = KeyFactory.getInstance("RSA");
+			PublicKey publicKey = fact.generatePublic(spec);
+			DESCipher des = new DESCipher();
+			des.createKey();
+			SecretKey keyOfDes = des.getKey();
+			RSA rsa = new RSA();
+			String keyOfDesToString = Base64.getEncoder()
+					.encodeToString(rsa.encryptByteArr(keyOfDes.getEncoded(), publicKey));
+			dos.writeUTF(keyOfDesToString);
+			File file = new File(pathSourcefile);
+			String fileName = file.getName();
+			String name = fileName.substring(0, fileName.lastIndexOf("."));
+			String extension = fileName.substring(fileName.lastIndexOf("."), fileName.length());
+			dos.writeUTF(name);
+			dos.writeUTF(extension);
+			String locationFileEncrypt = "./" + name + "_Encrypt" + extension;
+			des.encryptFile(pathSourcefile, locationFileEncrypt, keyOfDes);
+			File fileSource = new File(locationFileEncrypt);
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileSource));
+			dos.writeLong(fileSource.length());
 			dos.flush();
+			int dataFile;
+			while ((dataFile = bis.read()) != -1) {
+				dos.write(dataFile);
+				dos.flush();
+			}
+			bis.close();
+			fileSource.delete();
+			break;
 		}
-		bis.close();
-		while (true) {
-//			BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-//			String command = bf.readLine();
-//			dos.writeUTF(command);
-//			dos.flush();
-//
-//			if (command.equalsIgnoreCase("QUIT")) {
-//			}
-
-//			StringTokenizer st = new StringTokenizer(command, " ");
-//			String key = st.nextToken().toUpperCase();
-//			switch (key) {
-//			case "SEND":
-//				String pathDirectoryUploadAtClient = dis.readUTF();
-//				if (pathDirectoryUploadAtClient.equals("-11")) {
-//					System.out.println("Too many param!!!");
-//					break;
-//				}
-//				String sf = st.nextToken();
-//				File fileSource = new File(pathDirectoryUploadAtClient + File.separator + sf);
-//				if (!fileSource.exists()) {
-//					System.out.println("Source file name not exists!!!");
-//					break;
-//				}
-//				BufferedInputStream bis = new BufferedInputStream(new FileInputStream(fileSource));
-//				dos.writeLong(fileSource.length());
-//				dos.flush();
-//				errorCode = dis.readInt();
-//				if (errorCode == 0) {
-//					int data;
-//					while ((data = bis.read()) != -1) {
-//						dos.write(data);
-//						dos.flush();
-//					}
-//					bis.close();
-//				}
-//				break;
-//			case "GET":
-//				String pathDirectorySaveAtClient = dis.readUTF();
-//				if (pathDirectorySaveAtClient.equals("-1")) {
-//					System.out.println("Source file name not exists!!!");
-//					break;
-//				} else if (pathDirectorySaveAtClient.equals("-11")) {
-//					System.out.println("Too many param!!!");
-//					break;
-//				}
-//				String sourceFile = st.nextToken();
-//				String saveFileWithName = st.nextToken();
-//				File df = new File(pathDirectorySaveAtClient + File.separator + saveFileWithName);
-//				BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(df));
-//				long fileSize = dis.readLong();
-//				for (int i = 0; i < fileSize; i++) {
-//					bos.write(dis.read());
-//					bos.flush();
-//				}
-//				bos.close();
-//				break;
-//			default:
-//				break;
-//			}
-
-			System.out.println(dis.readUTF());
+		case "DOWNLOAD": {
+			dos.writeUTF("DOWNLOAD");
+			break;
+		}
+		default:
+			break;
 		}
 	}
 }

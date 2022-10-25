@@ -6,13 +6,17 @@ import java.net.Socket;
 
 public class ServerTransport {
 	public static final int PORT = 1378;
-
-	public static void main(String[] args) throws IOException {
+	
+	public static void serverAccepted() throws IOException {
 		ServerSocket ss = new ServerSocket(PORT);
 		while (true) {
 			Socket s = ss.accept();
 			Thread t = new Transport(s);
 			t.start();
 		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		serverAccepted();
 	}
 }

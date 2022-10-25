@@ -13,7 +13,6 @@
     <fullyQualifiedTypeName name="java.lang.Character"/>
     <fullyQualifiedTypeName name="view.MaHoaThayThe"/>
     <fullyQualifiedTypeName name="model.AlternativeEncoding"/>
-    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="view.Vigenere"/>
@@ -25,18 +24,15 @@
     <fullyQualifiedTypeName name="java.security.KeyPairGenerator"/>
     <fullyQualifiedTypeName name="java.security.KeyPair"/>
     <fullyQualifiedTypeName name="javax.crypto.Cipher"/>
-    <fullyQualifiedTypeName name="java.nio.charset.StandardCharsets"/>
     <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
     <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
     <fullyQualifiedTypeName name="java.lang.String"/>
     <fullyQualifiedTypeName name="java.security.interfaces.ECPublicKey"/>
     <fullyQualifiedTypeName name="java.security.KeyFactory"/>
     <fullyQualifiedTypeName name="java.security.spec.X509EncodedKeySpec"/>
-    <fullyQualifiedTypeName name="tcp.ClientTransport"/>
     <fullyQualifiedTypeName name="java.util.Base64"/>
     <fullyQualifiedTypeName name="java.security.PublicKey"/>
     <fullyQualifiedTypeName name="java.security.Key"/>
-    <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
     <fullyQualifiedTypeName name="java.lang.Byte"/>
     <fullyQualifiedTypeName name="javax.crypto.SecretKey"/>
     <fullyQualifiedTypeName name="javax.crypto.spec.SecretKeySpec"/>
@@ -50,5 +46,13 @@
     <fullyQualifiedTypeName name="java.io.FileInputStream"/>
     <fullyQualifiedTypeName name="model.DESCipher"/>
     <fullyQualifiedTypeName name="java.nio.file.Files"/>
+    <fullyQualifiedTypeName name="java.security.MessageDigest"/>
+    <fullyQualifiedTypeName name="java.math.BigInteger"/>
+    <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
+    <fullyQualifiedTypeName name="java.nio.charset.StandardCharsets"/>
+    <fullyQualifiedTypeName name="java.lang.StringBuilder"/>
     <fullyQualifiedTypeName name="java.io.File"/>
+    <fullyQualifiedTypeName name="tcp.ClientTransport"/>
+    <fullyQualifiedTypeName name="tcp.ServerTransport"/>
+    <fullyQualifiedTypeName name="view.RSAvsDES"/>
 </qualifiedTypeNameHistroy>

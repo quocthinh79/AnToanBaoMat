@@ -35,7 +35,6 @@ import java.awt.Font;
 public class ViewMain extends JFrame {
 
 	private JPanel contentPane;
-	private String currentPanel = "Dịch chuyển";
 
 	/**
 	 * Launch the application.
@@ -86,6 +85,21 @@ public class ViewMain extends JFrame {
 
 		JMenu mnNewMenu_3 = new JMenu("Mã hóa bất đối xứng");
 		mnNewMenu.add(mnNewMenu_3);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Mã hóa RSA kết hợp DES (Client Server)");
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				RSAvsDES rsaVsDes = new RSAvsDES();
+				contentPane.add(rsaVsDes);
+				repaint();
+				revalidate();
+			}
+		});
+		mnNewMenu_3.add(mntmNewMenuItem_4);
 
 		JMenu mnNewMenu_1 = new JMenu("Thoát");
 		mnNewMenu_1.addMouseListener(new MouseAdapter() {
@@ -134,7 +148,6 @@ public class ViewMain extends JFrame {
 		});
 		mntmNewMenuItem_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentPanel = "Vigenere";
 				contentPane = new JPanel();
 				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				setContentPane(contentPane);
@@ -147,8 +160,6 @@ public class ViewMain extends JFrame {
 		});
 		mntmNewMenuItem_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				currentPanel = "Hill";
-				currentPanel = "Vigenere";
 				contentPane = new JPanel();
 				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				setContentPane(contentPane);
