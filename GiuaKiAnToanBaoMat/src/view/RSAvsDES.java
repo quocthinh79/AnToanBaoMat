@@ -7,6 +7,7 @@ import javax.swing.border.LineBorder;
 
 import tcp.ClientTransport;
 import tcp.ServerTransport;
+import tcp.Transport;
 
 import java.awt.Color;
 import javax.swing.JTextField;
@@ -18,29 +19,31 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
 public class RSAvsDES extends JPanel {
-	private JTextField createWithSize;
 	private List<Integer> key = new ArrayList<>();
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
-	
+
 	private ClientTransport client;
-	private ServerTransport server;
 
 	/**
 	 * Create the panel.
+	 * 
+	 * @throws IOException
 	 */
 
 	public RSAvsDES() {
 		client = new ClientTransport();
-		server = new ServerTransport();
 		setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -49,23 +52,47 @@ public class RSAvsDES extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Key file link:");
+		JLabel lblNewLabel_1 = new JLabel("Public key:");
 		lblNewLabel_1.setBounds(10, 11, 181, 22);
 		panel.add(lblNewLabel_1);
-
-		createWithSize = new JTextField();
-		createWithSize.setToolTipText("Enter number");
-		createWithSize.setBounds(10, 44, 270, 28);
-		panel.add(createWithSize);
-		createWithSize.setColumns(10);
-
-		JButton createBtn = new JButton("Create key");
-		createBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		createBtn.setBounds(99, 177, 115, 23);
-		panel.add(createBtn);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 33, 270, 73);
+		panel.add(scrollPane);
+		
+		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
+		scrollPane.setViewportView(textArea);
+		textArea.setWrapStyleWord(true);
+		textArea.setLineWrap(true);
+		
+		JLabel lblNewLabel_1_4 = new JLabel("Private key:");
+		lblNewLabel_1_4.setBounds(10, 113, 181, 22);
+		panel.add(lblNewLabel_1_4);
+		
+		JLabel lblNewLabel_1_5 = new JLabel("Secret key:");
+		lblNewLabel_1_5.setBounds(10, 214, 181, 22);
+		panel.add(lblNewLabel_1_5);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 134, 268, 71);
+		panel.add(scrollPane_1);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setEditable(false);
+		scrollPane_1.setViewportView(textArea_1);
+		textArea_1.setWrapStyleWord(true);
+		textArea_1.setLineWrap(true);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 238, 268, 71);
+		panel.add(scrollPane_2);
+		
+		JTextArea textArea_1_1 = new JTextArea();
+		textArea_1_1.setEditable(false);
+		scrollPane_2.setViewportView(textArea_1_1);
+		textArea_1_1.setWrapStyleWord(true);
+		textArea_1_1.setLineWrap(true);
 
 		JLabel lblNewLabel = new JLabel("RSA vs DES (Client Server)");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
@@ -138,12 +165,15 @@ public class RSAvsDES extends JPanel {
 		lblNewLabel_1_3.setBounds(10, 11, 181, 22);
 		panel_3.add(lblNewLabel_1_3);
 
-		JButton btnNewButton_1_1 = new JButton("Send");
+		JButton btnNewButton_1_1 = new JButton("Start");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					server.serverAccepted();
-					client.handleInClient(textField.getText(), "UPLOAD");
+					String fileLink = textField.getText();
+					client.handleInClient(fileLink, "UPLOAD");
+					textArea.setText(client.getPublicKey());
+					textArea_1_1.setText(client.getSecretKey());
+					System.out.println(new Transport().getPrivateKey());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

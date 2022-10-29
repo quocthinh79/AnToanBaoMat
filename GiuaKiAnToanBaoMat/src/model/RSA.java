@@ -1,5 +1,12 @@
 package model;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.KeyFactory;
@@ -9,8 +16,13 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Arrays;
 
+import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.CipherInputStream;
+import javax.crypto.CipherOutputStream;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,6 +31,24 @@ public class RSA {
 	public KeyPair keyPair;
 	public PublicKey publicKey;
 	public PrivateKey privateKey;
+	public int keySize;
+	public int maxSizeCanCipher;
+
+	public int getMaxSizeCanCipher() {
+		return maxSizeCanCipher;
+	}
+
+	public void setMaxSizeCanCipher(int maxSizeCanCipher) {
+		this.maxSizeCanCipher = maxSizeCanCipher;
+	}
+
+	public int getKeySize() {
+		return keySize;
+	}
+
+	public void setKeySize(int keySize) {
+		this.keySize = keySize;
+	}
 
 	public RSA() {
 		// TODO Auto-generated constructor stub
@@ -29,7 +59,7 @@ public class RSA {
 		KeyPairGenerator keyGenerator = null;
 		try {
 			keyGenerator = KeyPairGenerator.getInstance("RSA");
-			keyGenerator.initialize(2048);
+			keyGenerator.initialize(512);
 			keyPair = keyGenerator.generateKeyPair();
 			publicKey = keyPair.getPublic();
 			privateKey = keyPair.getPrivate();
@@ -38,12 +68,54 @@ public class RSA {
 		}
 	}
 
+	public void getKey(int keySize) {
+		setKeySize(keySize);
+		int maxSizeCanCipher = keySize / 8 - 11;
+		setMaxSizeCanCipher(maxSizeCanCipher);
+		KeyPairGenerator keyGenerator = null;
+		try {
+			keyGenerator = KeyPairGenerator.getInstance("RSA");
+			keyGenerator.initialize(keySize);
+			keyPair = keyGenerator.generateKeyPair();
+			publicKey = keyPair.getPublic();
+			privateKey = keyPair.getPrivate();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+
+	public byte[] devideByteArray(Cipher cipher, byte[] input, String type)
+			throws IllegalBlockSizeException, BadPaddingException, IOException {
+		int i = 0;
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		if (type.equals("DECRYPT")) {
+			maxSizeCanCipher += 11;
+		}
+		while (i < input.length) {
+			i += maxSizeCanCipher;
+			int temp = i;
+			int back = temp - maxSizeCanCipher;
+			if (temp >= input.length) {
+				temp = input.length;
+			}
+			byte[] byteCut = Arrays.copyOfRange(input, back, temp);
+			outputStream.write(cipher.doFinal(byteCut, 0, byteCut.length));
+		}
+		byte[] plaintTextResult = outputStream.toByteArray();
+		return plaintTextResult;
+	}
+
 	public byte[] encrypt(String text) throws Exception {
 		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-		cipher.init(Cipher.ENCRYPT_MODE,
-				KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKey.getEncoded())));
+		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
 		byte[] plaintText = text.getBytes(StandardCharsets.UTF_8);
-		return cipher.doFinal(plaintText);
+		return devideByteArray(cipher, plaintText, "ENCRYPT");
+	}
+
+	public String decrypt(byte[] text) throws Exception {
+		Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+		cipher.init(Cipher.DECRYPT_MODE, privateKey);
+		return new String(devideByteArray(cipher, text, "DECRYPT"), StandardCharsets.UTF_8);
 	}
 
 	public byte[] encryptByteArr(byte[] text, Key key) throws Exception {
@@ -64,6 +136,94 @@ public class RSA {
 		cipher.init(Cipher.DECRYPT_MODE, key);
 		byte[] plaintText = cipher.doFinal(text);
 		return new String(plaintText, StandardCharsets.UTF_8);
+	}
+
+	public void encryptFile(String pathIn, String pathOut) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pathIn));
+			BufferedOutputStream cos = new BufferedOutputStream(new FileOutputStream(pathOut));
+			byte[] buffer = new byte[1024];
+			int read;
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			while ((read = bis.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, read);
+			}
+			byte[] byteArray = outputStream.toByteArray();
+			cos.write(devideByteArray(cipher, byteArray, "ENCRYPT"));
+			bis.close();
+			cos.flush();
+			cos.close();
+			System.out.println("Encrypt File Success!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void encryptFile(String pathIn, String pathOut, Key key) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(pathIn));
+			CipherOutputStream cos = new CipherOutputStream(new FileOutputStream(pathOut), cipher);
+
+			byte[] buffer = new byte[1024];
+			int read;
+			while ((read = bis.read(buffer)) != -1) {
+				cos.write(buffer, 0, read);
+			}
+			bis.close();
+			cos.flush();
+			cos.close();
+			System.out.println("Encrypt File Success!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void decryptFile(String pathIn, String pathOut) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.DECRYPT_MODE, privateKey);
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(pathOut));
+			BufferedInputStream cis = new BufferedInputStream(new FileInputStream(pathIn));
+			byte[] buffer = new byte[1024];
+			int read;
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			while ((read = cis.read(buffer)) != -1) {
+				outputStream.write(buffer, 0, read);
+			}
+			byte[] byteArray = outputStream.toByteArray();
+			bos.write(devideByteArray(cipher, byteArray, "DECRYPT"));
+			cis.close();
+			bos.flush();
+			bos.close();
+			System.out.println("Decrypt File Success!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void decryptFile(String pathIn, String pathOut, Key key) {
+		try {
+			Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(pathOut));
+			CipherInputStream cis = new CipherInputStream(new FileInputStream(pathIn), cipher);
+
+			byte[] buffer = new byte[1024];
+			int read;
+			while ((read = cis.read(buffer)) != -1) {
+				bos.write(buffer, 0, read);
+			}
+			cis.close();
+			bos.flush();
+			bos.close();
+			System.out.println("Decrypt File Success!");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public KeyPair getKeyPair() {
@@ -93,8 +253,12 @@ public class RSA {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		RSA rsa = new RSA();
-		Key key = rsa.getPrivateKey();
-		System.out.println(rsa.decrypt(rsa.encrypt("Lê Quốc Thịnh"), key));
+		rsa.getKey(1024);
+//		Key key = rsa.getPrivateKey();
+//		System.out.println(rsa.encrypt(
+//				"LeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinh"));
+		System.out.println(rsa.decrypt(rsa.encrypt(
+				"LeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinhLeQuocThinh")));
 	}
 
 }

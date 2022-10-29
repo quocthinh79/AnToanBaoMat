@@ -85,11 +85,12 @@ public class DES extends JPanel {
 		JButton btnNewButton = new JButton("Browse");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JFileChooser fileChooser = new JFileChooser(System.getProperty("user.home"));
+				JFileChooser fileChooser = new JFileChooser();
 				int rVal = fileChooser.showOpenDialog(DES.this);
 				if (rVal == JFileChooser.APPROVE_OPTION) {
 					try {
 						File file = fileChooser.getSelectedFile();
+						file.setReadable(true);
 						textField.setText(file.getAbsolutePath());
 					} catch (Exception ex) {
 						ex.printStackTrace();

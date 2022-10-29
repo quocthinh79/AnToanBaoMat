@@ -22,9 +22,17 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.border.LineBorder;
+
+import tcp.ServerTransport;
+import tcp.Transport;
+
 import java.awt.Color;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -38,8 +46,9 @@ public class ViewMain extends JFrame {
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -87,19 +96,22 @@ public class ViewMain extends JFrame {
 		mnNewMenu.add(mnNewMenu_3);
 		
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Mã hóa RSA kết hợp DES (Client Server)");
-		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+		mnNewMenu_3.add(mntmNewMenuItem_4);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Mã hóa RSA");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				contentPane = new JPanel();
 				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 				setContentPane(contentPane);
 				contentPane.setLayout(new BorderLayout(0, 0));
-				RSAvsDES rsaVsDes = new RSAvsDES();
-				contentPane.add(rsaVsDes);
+				RSAJPanel rsa = new RSAJPanel();
+				contentPane.add(rsa);
 				repaint();
 				revalidate();
 			}
 		});
-		mnNewMenu_3.add(mntmNewMenuItem_4);
+		mnNewMenu_3.add(mntmNewMenuItem_5);
 
 		JMenu mnNewMenu_1 = new JMenu("Thoát");
 		mnNewMenu_1.addMouseListener(new MouseAdapter() {
@@ -178,6 +190,18 @@ public class ViewMain extends JFrame {
 				contentPane.setLayout(new BorderLayout(0, 0));
 				DES des = new DES();
 				contentPane.add(des);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				RSAvsDES rsaVsDes = new RSAvsDES();
+				contentPane.add(rsaVsDes);
 				repaint();
 				revalidate();
 			}

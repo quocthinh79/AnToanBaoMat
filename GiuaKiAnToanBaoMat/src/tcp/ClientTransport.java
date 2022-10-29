@@ -28,6 +28,25 @@ import model.DESCipher;
 import model.RSA;
 
 public class ClientTransport {
+	static String publicKey;
+	static String secretKey;
+	
+
+	public static String getSecretKey() {
+		return secretKey;
+	}
+
+	public static void setSecretKey(String secretKey) {
+		ClientTransport.secretKey = secretKey;
+	}
+
+	public static String getPublicKey() {
+		return publicKey;
+	}
+
+	public static void setPublicKey(String publicKey) {
+		ClientTransport.publicKey = publicKey;
+	}
 
 	public static void main(String[] args) throws Exception {
 		handleInClient("E:\\ATBM\\Client\\LeQuocThinh_CV.pdf", "UPLOAD");
@@ -43,6 +62,7 @@ public class ClientTransport {
 		case "UPLOAD": {
 			dos.writeUTF("UPLOAD");
 			String publicKeyInString = dis.readUTF();
+			setPublicKey(publicKeyInString);
 			byte[] data = Base64.getDecoder().decode((publicKeyInString.getBytes()));
 			X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
 			KeyFactory fact = KeyFactory.getInstance("RSA");
@@ -54,6 +74,7 @@ public class ClientTransport {
 			String keyOfDesToString = Base64.getEncoder()
 					.encodeToString(rsa.encryptByteArr(keyOfDes.getEncoded(), publicKey));
 			dos.writeUTF(keyOfDesToString);
+			setSecretKey(keyOfDesToString);
 			File file = new File(pathSourcefile);
 			String fileName = file.getName();
 			String name = fileName.substring(0, fileName.lastIndexOf("."));

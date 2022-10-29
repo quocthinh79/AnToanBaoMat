@@ -9,6 +9,8 @@
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
 			<item value="DES"/>
+			<item value="ClientRSAvsDES"/>
+			<item value="RSAvsDES"/>
 			<item value="keyOfDesToString"/>
 			<item value="Vigenere"/>
 			<item value="TEST"/>
@@ -21,6 +23,8 @@
 		</list>
 		<list key="replacehistory">
 			<item value="RSA"/>
+			<item value="ServerRSAvsDES"/>
+			<item value="ClientRSAvsDES"/>
 			<item value="DES"/>
 			<item value="generalAlphabetListWithSpace"/>
 			<item value="27"/>

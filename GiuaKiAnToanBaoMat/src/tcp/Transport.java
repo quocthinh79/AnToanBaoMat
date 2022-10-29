@@ -41,6 +41,20 @@ public class Transport extends Thread {
 		dos = new DataOutputStream(s.getOutputStream());
 	}
 
+	PrivateKey privateKey;
+
+	public PrivateKey getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(PrivateKey privateKey) {
+		this.privateKey = privateKey;
+	}
+	
+	public Transport() {
+		// TODO Auto-generated constructor stub
+	}
+
 	@Override
 	public void run() {
 		try {
@@ -52,6 +66,7 @@ public class Transport extends Thread {
 				rsa.getKey();
 				PublicKey publicKey = rsa.publicKey;
 				PrivateKey privateKey = rsa.privateKey;
+				setPrivateKey(privateKey);
 				String keyToString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 				dos.writeUTF(keyToString);
 				dos.flush();
