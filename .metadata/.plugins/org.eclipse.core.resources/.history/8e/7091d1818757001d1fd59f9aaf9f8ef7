@@ -1,0 +1,14 @@
+package view;
+
+import javax.swing.JPanel;
+
+public class MD5JPanel extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public MD5JPanel() {
+
+	}
+
+}

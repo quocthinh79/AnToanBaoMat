@@ -1,0 +1,37 @@
+package model;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+public class MyHash {
+
+	public static String MD5 = "MD5";
+	public static String SHA_224 = "SHA-224";
+
+	String name;
+	MessageDigest md;
+
+	public MyHash(String name) throws NoSuchAlgorithmException {
+		super();
+		this.name = name;
+		md = MessageDigest.getInstance(this.name);
+	}
+
+	public static MyHash getInstance(String name) {
+		MyHash install = null;
+		try {
+			install = new MyHash(name);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		return install;
+	}
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

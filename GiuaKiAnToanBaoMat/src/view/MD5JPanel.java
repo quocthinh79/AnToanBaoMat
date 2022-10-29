@@ -1,0 +1,129 @@
+package view;
+
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.border.LineBorder;
+
+import model.MD5;
+import model.MyHash;
+
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+
+public class MD5JPanel extends JPanel {
+	public MD5 md5 = new MD5();
+
+	/**
+	 * Create the panel.
+	 */
+
+	public MD5JPanel() {
+		setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("MD5");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
+		lblNewLabel.setBounds(580, 11, 70, 27);
+		add(lblNewLabel);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(10, 43, 590, 320);
+		add(panel_1);
+		panel_1.setLayout(null);
+
+		JButton btnNewButton = new JButton("Browse");
+		btnNewButton.setBounds(259, 286, 89, 23);
+		panel_1.add(btnNewButton);
+
+		JLabel lblNewLabel_1_1 = new JLabel("Input:");
+		lblNewLabel_1_1.setBounds(10, 11, 181, 22);
+		panel_1.add(lblNewLabel_1_1);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 44, 570, 231);
+		panel_1.add(scrollPane);
+
+		JTextArea textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		scrollPane.setViewportView(textArea);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setBounds(610, 43, 590, 320);
+		add(panel_2);
+		panel_2.setLayout(null);
+
+		JLabel lblNewLabel_1_2 = new JLabel("Output:");
+		lblNewLabel_1_2.setBounds(10, 11, 181, 22);
+		panel_2.add(lblNewLabel_1_2);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 44, 570, 231);
+		panel_2.add(scrollPane_1);
+
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setEditable(false);
+		textArea_1.setWrapStyleWord(true);
+		textArea_1.setLineWrap(true);
+		scrollPane_1.setViewportView(textArea_1);
+
+		JButton btnNewButton_1_1 = new JButton("Hash");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String input = textArea.getText();
+				File file = new File(input);
+				if (file.isFile()) {
+					try {
+						MyHash mh = MyHash.getInstance(MyHash.MD5);
+						textArea_1.setText(mh.hashFile(file.getAbsolutePath()));
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} else {
+					try {
+						textArea_1.setText(md5.getMD5(input));
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+			}
+		});
+		btnNewButton_1_1.setBounds(561, 374, 89, 23);
+		add(btnNewButton_1_1);
+
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int rVal = fileChooser.showOpenDialog(MD5JPanel.this);
+				if (rVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						File file = fileChooser.getSelectedFile();
+						file.setReadable(true);
+						textArea.setText(file.getAbsolutePath());
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+				}
+			}
+		});
+	}
+}

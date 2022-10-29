@@ -1,0 +1,211 @@
+package view;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JToolBar;
+import javax.swing.BoxLayout;
+import java.awt.FlowLayout;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Component;
+import javax.swing.Box;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.BorderLayout;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.border.LineBorder;
+
+import tcp.ServerTransport;
+import tcp.Transport;
+
+import java.awt.Color;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JScrollBar;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+
+public class ViewMain extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 * @throws IOException 
+	 */
+	public static void main(String[] args) throws IOException {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					ViewMain frame = new ViewMain();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public ViewMain() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 1250, 646);
+
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+
+		JMenu mnNewMenu = new JMenu("Loại mã hóa");
+		menuBar.add(mnNewMenu);
+
+		JMenu mnNewMenu_2 = new JMenu("Mã hóa đối xứng");
+		mnNewMenu.add(mnNewMenu_2);
+
+		JMenuItem mntmNewMenuItem = new JMenuItem("Mã hóa dịch chuyển");
+		mnNewMenu_2.add(mntmNewMenuItem);
+
+		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Mã hóa thay thế");
+		mnNewMenu_2.add(mntmNewMenuItem_1);
+
+		JMenuItem mntmNewMenuItem_2 = new JMenuItem("Mã hóa Vigenere");
+		mnNewMenu_2.add(mntmNewMenuItem_2);
+
+		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Mã hóa Hill");
+		mnNewMenu_2.add(mntmNewMenuItem_3);
+		
+		JMenuItem mntmNewMenuItem_3_1 = new JMenuItem("Mã hóa DES");
+		mnNewMenu_2.add(mntmNewMenuItem_3_1);
+
+		JMenu mnNewMenu_3 = new JMenu("Mã hóa bất đối xứng");
+		mnNewMenu.add(mnNewMenu_3);
+		
+		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Mã hóa RSA kết hợp DES (Client Server)");
+		mnNewMenu_3.add(mntmNewMenuItem_4);
+		
+		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Mã hóa RSA");
+		mntmNewMenuItem_5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				RSAJPanel rsa = new RSAJPanel();
+				contentPane.add(rsa);
+				repaint();
+				revalidate();
+			}
+		});
+		mnNewMenu_3.add(mntmNewMenuItem_5);
+
+		JMenu mnNewMenu_1 = new JMenu("Thoát");
+		mnNewMenu_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		menuBar.add(mnNewMenu_1);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+		setContentPane(contentPane);
+		contentPane.setLayout(new BorderLayout(0, 0));
+
+		MaHoaDichChuyen maHoaDichChuyen = new MaHoaDichChuyen();
+		contentPane.add(maHoaDichChuyen);
+
+		JLabel lblNewLabel_6 = new JLabel("Chào mừng bạn đến với phần mềm mã hóa và giải mã đơn giản");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		lblNewLabel_6.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(lblNewLabel_6);
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				MaHoaThayThe maHoaThayThe = new MaHoaThayThe();
+				contentPane.add(maHoaThayThe);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				MaHoaDichChuyen maHoaDichChuyen = new MaHoaDichChuyen();
+				contentPane.add(maHoaDichChuyen);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				Vigenere vigenere = new Vigenere();
+				contentPane.add(vigenere);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				Hill hill = new Hill();
+				contentPane.add(hill);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem_3_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				DES des = new DES();
+				contentPane.add(des);
+				repaint();
+				revalidate();
+			}
+		});
+		mntmNewMenuItem_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				RSAvsDES rsaVsDes = new RSAvsDES();
+				contentPane.add(rsaVsDes);
+				repaint();
+				revalidate();
+			}
+		});
+	}
+
+}

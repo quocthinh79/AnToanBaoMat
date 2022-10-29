@@ -30,7 +30,24 @@ import model.RSA;
 public class ClientTransport {
 	static String publicKey;
 	static String secretKey;
-	
+	static String privateKey;
+	static String pathFileInSerser;
+
+	public static String getPathFileInSerser() {
+		return pathFileInSerser;
+	}
+
+	public static void setPathFileInSerser(String pathFileInSerser) {
+		ClientTransport.pathFileInSerser = pathFileInSerser;
+	}
+
+	public static String getPrivateKey() {
+		return privateKey;
+	}
+
+	public static void setPrivateKey(String privateKey) {
+		ClientTransport.privateKey = privateKey;
+	}
 
 	public static String getSecretKey() {
 		return secretKey;
@@ -63,6 +80,8 @@ public class ClientTransport {
 			dos.writeUTF("UPLOAD");
 			String publicKeyInString = dis.readUTF();
 			setPublicKey(publicKeyInString);
+			String privateKeyInString = dis.readUTF();
+			setPrivateKey(privateKeyInString);
 			byte[] data = Base64.getDecoder().decode((publicKeyInString.getBytes()));
 			X509EncodedKeySpec spec = new X509EncodedKeySpec(data);
 			KeyFactory fact = KeyFactory.getInstance("RSA");
@@ -92,6 +111,8 @@ public class ClientTransport {
 				dos.write(dataFile);
 				dos.flush();
 			}
+			String pathFile = dis.readUTF();
+			setPathFileInSerser(pathFile);
 			bis.close();
 			fileSource.delete();
 			break;

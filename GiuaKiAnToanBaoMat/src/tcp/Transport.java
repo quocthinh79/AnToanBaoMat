@@ -34,6 +34,15 @@ public class Transport extends Thread {
 	ObjectInputStream ois;
 	ObjectOutputStream oos;
 	RSA rsa;
+	String pathFileDecryptInServer;
+
+	public String getPathFileDecryptInServer() {
+		return pathFileDecryptInServer;
+	}
+
+	public void setPathFileDecryptInServer(String pathFileDecryptInServer) {
+		this.pathFileDecryptInServer = pathFileDecryptInServer;
+	}
 
 	public Transport(Socket s) throws IOException {
 		this.s = s;
@@ -50,7 +59,7 @@ public class Transport extends Thread {
 	public void setPrivateKey(PrivateKey privateKey) {
 		this.privateKey = privateKey;
 	}
-	
+
 	public Transport() {
 		// TODO Auto-generated constructor stub
 	}
@@ -69,6 +78,8 @@ public class Transport extends Thread {
 				setPrivateKey(privateKey);
 				String keyToString = Base64.getEncoder().encodeToString(publicKey.getEncoded());
 				dos.writeUTF(keyToString);
+				String privateKeyToString = Base64.getEncoder().encodeToString(privateKey.getEncoded());
+				dos.writeUTF(privateKeyToString);
 				dos.flush();
 				String keyDesFromString = dis.readUTF();
 				String fileName = dis.readUTF();
@@ -89,6 +100,7 @@ public class Transport extends Thread {
 					bos.close();
 				} catch (IOException e) {
 				}
+				dos.writeUTF("./" + fileName + fileExtension);
 				des.decryptFile(pathFileDecrypt, "./" + fileName + fileExtension, keyOfDes);
 				f.delete();
 				break;

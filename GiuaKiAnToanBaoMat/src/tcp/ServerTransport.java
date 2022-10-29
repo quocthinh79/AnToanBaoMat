@@ -6,7 +6,7 @@ import java.net.Socket;
 
 public class ServerTransport {
 	public static final int PORT = 1378;
-	
+
 	public static void serverAccepted() throws IOException {
 		ServerSocket ss = new ServerSocket(PORT);
 		while (true) {
@@ -15,7 +15,7 @@ public class ServerTransport {
 			t.start();
 		}
 	}
-	
+
 //	public ServerTransport() throws IOException {
 //		// TODO Auto-generated constructor stub
 //		ServerSocket ss = new ServerSocket(PORT);

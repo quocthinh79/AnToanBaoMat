@@ -86,6 +86,7 @@ public class Hill extends JPanel {
 		panel.add(keyNum3);
 
 		KInverse1 = new JTextField();
+		KInverse1.setEditable(false);
 		KInverse1.setHorizontalAlignment(SwingConstants.CENTER);
 		KInverse1.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		KInverse1.setColumns(10);
@@ -93,6 +94,7 @@ public class Hill extends JPanel {
 		panel.add(KInverse1);
 
 		KInverse2 = new JTextField();
+		KInverse2.setEditable(false);
 		KInverse2.setHorizontalAlignment(SwingConstants.CENTER);
 		KInverse2.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		KInverse2.setColumns(10);
@@ -100,6 +102,7 @@ public class Hill extends JPanel {
 		panel.add(KInverse2);
 
 		KInverse4 = new JTextField();
+		KInverse4.setEditable(false);
 		KInverse4.setHorizontalAlignment(SwingConstants.CENTER);
 		KInverse4.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		KInverse4.setColumns(10);
@@ -107,6 +110,7 @@ public class Hill extends JPanel {
 		panel.add(KInverse4);
 
 		KInverse3 = new JTextField();
+		KInverse3.setEditable(false);
 		KInverse3.setHorizontalAlignment(SwingConstants.CENTER);
 		KInverse3.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		KInverse3.setColumns(10);

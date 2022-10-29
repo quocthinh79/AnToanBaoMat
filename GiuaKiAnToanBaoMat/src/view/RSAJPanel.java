@@ -61,7 +61,7 @@ public class RSAJPanel extends JPanel {
 		panel.add(lblNewLabel_2);
 
 		JLabel lblNewLabel_3 = new JLabel("Public key");
-		lblNewLabel_3.setBounds(10, 46, 47, 23);
+		lblNewLabel_3.setBounds(10, 46, 79, 23);
 		panel.add(lblNewLabel_3);
 
 		JLabel lblNewLabel_3_1 = new JLabel("Private key");
@@ -119,7 +119,7 @@ public class RSAJPanel extends JPanel {
 		textField.setBounds(10, 44, 270, 28);
 		panel_1.add(textField);
 
-		JLabel lblNewLabel_1_1 = new JLabel("Input file link:");
+		JLabel lblNewLabel_1_1 = new JLabel("Input:");
 		lblNewLabel_1_1.setBounds(10, 11, 181, 22);
 		panel_1.add(lblNewLabel_1_1);
 
@@ -135,7 +135,7 @@ public class RSAJPanel extends JPanel {
 		textField_1.setBounds(10, 44, 270, 28);
 		panel_2.add(textField_1);
 
-		JLabel lblNewLabel_1_2 = new JLabel("Encrypt file link:");
+		JLabel lblNewLabel_1_2 = new JLabel("Encrypt:");
 		lblNewLabel_1_2.setBounds(10, 11, 181, 22);
 		panel_2.add(lblNewLabel_1_2);
 
@@ -151,7 +151,7 @@ public class RSAJPanel extends JPanel {
 		textField_2.setBounds(10, 44, 270, 28);
 		panel_3.add(textField_2);
 
-		JLabel lblNewLabel_1_3 = new JLabel("Decrypt file link:");
+		JLabel lblNewLabel_1_3 = new JLabel("Decrypt:");
 		lblNewLabel_1_3.setBounds(10, 11, 181, 22);
 		panel_3.add(lblNewLabel_1_3);
 
@@ -225,14 +225,6 @@ public class RSAJPanel extends JPanel {
 				String privateKey = Base64.getEncoder().encodeToString(rsa.getPrivateKey().getEncoded());
 				textArea.setText(publicKey);
 				textArea_1.setText(privateKey);
-//				RSA.("./Key.txt");
-//				File file = new File("./Key.txt");
-//				try {
-//					createWithSize.setText(file.getCanonicalPath());
-//				} catch (IOException e1) {
-//					// TODO Auto-generated catch block
-//					e1.printStackTrace();
-//				}
 			}
 		});
 	}

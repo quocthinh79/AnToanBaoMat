@@ -46,19 +46,23 @@ public class ViewMain extends JFrame {
 
 	/**
 	 * Launch the application.
-	 * @throws IOException 
+	 * 
+	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		EventQueue.invokeLater(new Runnable() {
+//		EventQueue.invokeLater();
+		new Thread(new Runnable() {
 			public void run() {
 				try {
 					ViewMain frame = new ViewMain();
 					frame.setVisible(true);
+					ServerTransport tcp = new ServerTransport();
+					tcp.serverAccepted();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});
+		}).start();
 	}
 
 	/**
@@ -88,16 +92,16 @@ public class ViewMain extends JFrame {
 
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Mã hóa Hill");
 		mnNewMenu_2.add(mntmNewMenuItem_3);
-		
+
 		JMenuItem mntmNewMenuItem_3_1 = new JMenuItem("Mã hóa DES");
 		mnNewMenu_2.add(mntmNewMenuItem_3_1);
 
 		JMenu mnNewMenu_3 = new JMenu("Mã hóa bất đối xứng");
 		mnNewMenu.add(mnNewMenu_3);
-		
+
 		JMenuItem mntmNewMenuItem_4 = new JMenuItem("Mã hóa RSA kết hợp DES (Client Server)");
 		mnNewMenu_3.add(mntmNewMenuItem_4);
-		
+
 		JMenuItem mntmNewMenuItem_5 = new JMenuItem("Mã hóa RSA");
 		mntmNewMenuItem_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -112,6 +116,39 @@ public class ViewMain extends JFrame {
 			}
 		});
 		mnNewMenu_3.add(mntmNewMenuItem_5);
+
+		JMenu mnNewMenu_2_1 = new JMenu("Hàm băm");
+		mnNewMenu.add(mnNewMenu_2_1);
+
+		JMenuItem mntmMd = new JMenuItem("MD5");
+		mntmMd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				MD5JPanel md5 = new MD5JPanel();
+				contentPane.add(md5);
+				repaint();
+				revalidate();
+			}
+		});
+		mnNewMenu_2_1.add(mntmMd);
+
+		JMenuItem mntmNewMenuItem_1_1 = new JMenuItem("SHA");
+		mntmNewMenuItem_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				contentPane = new JPanel();
+				contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+				setContentPane(contentPane);
+				contentPane.setLayout(new BorderLayout(0, 0));
+				SHAJPanel sha = new SHAJPanel();
+				contentPane.add(sha);
+				repaint();
+				revalidate();
+			}
+		});
+		mnNewMenu_2_1.add(mntmNewMenuItem_1_1);
 
 		JMenu mnNewMenu_1 = new JMenu("Thoát");
 		mnNewMenu_1.addMouseListener(new MouseAdapter() {
