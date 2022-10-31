@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 
@@ -70,15 +72,24 @@ public class Vigenere extends JPanel {
 		JButton createBtn = new JButton("Create key");
 		createBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!createWithSize.getText().equals("")) {
-					setKey(vigenere.createKeyRandom(Integer.parseInt(createWithSize.getText())));
-				}
 				if (!createWithSize.getText().equals("") && !createWithTextAndSize.getText().equals("")) {
-					setKey(vigenere.createKeyFromString(Integer.parseInt(createWithSize.getText()),
-							createWithTextAndSize.getText()));
+					if (Integer.parseInt(createWithSize.getText()) != createWithTextAndSize.getText().length()) {
+						JOptionPane.showMessageDialog(null, "The length of text and numbers must be equal");
+					}
 				}
-				keyTextField
-						.setText(vigenere.keyToString(key).substring(0, vigenere.keyToString(key).lastIndexOf(" -")));
+				if (createWithSize.getText().equals("") && createWithTextAndSize.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter size or text");
+				} else {
+					if (!createWithSize.getText().equals("")) {
+						setKey(vigenere.createKeyRandom(Integer.parseInt(createWithSize.getText())));
+					}
+					if (!createWithSize.getText().equals("") && !createWithTextAndSize.getText().equals("")) {
+						setKey(vigenere.createKeyFromString(Integer.parseInt(createWithSize.getText()),
+								createWithTextAndSize.getText()));
+					}
+					keyTextField.setText(
+							vigenere.keyToString(key).substring(0, vigenere.keyToString(key).lastIndexOf(" -")));
+				}
 			}
 		});
 		createBtn.setBounds(91, 267, 115, 23);
@@ -87,6 +98,7 @@ public class Vigenere extends JPanel {
 		JLabel lblNewLabel = new JLabel("Vigenere");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		lblNewLabel.setBounds(580, 11, 70, 27);
+
 		add(lblNewLabel);
 
 		JPanel panel_1 = new JPanel();
@@ -141,7 +153,14 @@ public class Vigenere extends JPanel {
 		JButton btnNewButton_1 = new JButton("Encrypt");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea_1.setText(vigenere.encrypt(textArea.getText(), key));
+				if (keyTextField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1.setText(vigenere.encrypt(textArea.getText(), key));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
 			}
 		});
 		btnNewButton_1.setBounds(511, 374, 89, 23);
@@ -150,7 +169,14 @@ public class Vigenere extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Decrypt");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea_1_1.setText(vigenere.decrypt(textArea.getText(), key));
+				if (keyTextField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1_1.setText(vigenere.decrypt(textArea.getText(), key));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
 			}
 		});
 		btnNewButton_1_1.setBounds(610, 374, 89, 23);

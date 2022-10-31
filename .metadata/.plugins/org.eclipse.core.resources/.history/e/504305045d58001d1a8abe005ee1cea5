@@ -1,0 +1,185 @@
+package view;
+
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import java.awt.Font;
+import javax.swing.border.LineBorder;
+
+import model.VigenereEncoding;
+
+import java.awt.Color;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+
+public class Vigenere extends JPanel {
+	private JTextField createWithSize;
+	private JTextField createWithTextAndSize;
+	private JTextField keyTextField;
+	private List<Integer> key = new ArrayList<>();
+	private VigenereEncoding vigenere = new VigenereEncoding();
+
+	/**
+	 * Create the panel.
+	 */
+
+	public Vigenere() {
+		setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel.setBounds(10, 43, 290, 320);
+		add(panel);
+		panel.setLayout(null);
+
+		JLabel lblNewLabel_1 = new JLabel("Create with size:");
+		lblNewLabel_1.setBounds(10, 11, 181, 22);
+		panel.add(lblNewLabel_1);
+
+		createWithSize = new JTextField();
+		createWithSize.setToolTipText("Enter number");
+		createWithSize.setBounds(10, 44, 270, 28);
+		panel.add(createWithSize);
+		createWithSize.setColumns(10);
+
+		createWithTextAndSize = new JTextField();
+		createWithTextAndSize.setToolTipText("Enter text");
+		createWithTextAndSize.setColumns(10);
+		createWithTextAndSize.setBounds(10, 130, 270, 28);
+		panel.add(createWithTextAndSize);
+
+		JLabel lblNewLabel_1_1 = new JLabel("Create with size and text:");
+		lblNewLabel_1_1.setBounds(10, 97, 181, 22);
+		panel.add(lblNewLabel_1_1);
+
+		JLabel lblNewLabel_1_1_1 = new JLabel("Key:");
+		lblNewLabel_1_1_1.setBounds(10, 182, 133, 22);
+		panel.add(lblNewLabel_1_1_1);
+
+		keyTextField = new JTextField();
+		keyTextField.setEditable(false);
+		keyTextField.setColumns(10);
+		keyTextField.setBounds(10, 215, 270, 28);
+		panel.add(keyTextField);
+
+		JButton createBtn = new JButton("Create key");
+		createBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (Integer.parseInt(createWithSize.getText()) != createWithTextAndSize.getText().length()) {
+					JOptionPane.showMessageDialog(null, "The length of text and numbers must be equal");
+				} else if (createWithSize.getText().equals("") || createWithTextAndSize.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter size or text");
+				} else {
+				}
+					if (!createWithSize.getText().equals("")) {
+						setKey(vigenere.createKeyRandom(Integer.parseInt(createWithSize.getText())));
+					}
+					if (!createWithSize.getText().equals("") && !createWithTextAndSize.getText().equals("")) {
+						setKey(vigenere.createKeyFromString(Integer.parseInt(createWithSize.getText()),
+								createWithTextAndSize.getText()));
+					}
+					keyTextField.setText(
+							vigenere.keyToString(key).substring(0, vigenere.keyToString(key).lastIndexOf(" -")));
+				}
+			}
+		});createBtn.setBounds(91,267,115,23);panel.add(createBtn);
+
+	JLabel lblNewLabel = new JLabel(
+			"Vigenere");lblNewLabel.setFont(new Font("Tahoma",Font.PLAIN,17));lblNewLabel.setBounds(580,11,70,27);
+
+	add(lblNewLabel);
+
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_1.setBounds(310, 43, 290, 320);
+		add(panel_1);
+		panel_1.setLayout(null);
+
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 11, 270, 261);
+		panel_1.add(scrollPane);
+
+		JTextArea textArea = new JTextArea();
+		scrollPane.setViewportView(textArea);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+
+		JButton btnNewButton = new JButton("From file");
+		btnNewButton.setBounds(102, 286, 89, 23);
+		panel_1.add(btnNewButton);
+
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_2.setBounds(610, 43, 290, 320);
+		add(panel_2);
+		panel_2.setLayout(null);
+
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 11, 270, 298);
+		panel_2.add(scrollPane_1);
+
+		JTextArea textArea_1 = new JTextArea();
+		scrollPane_1.setViewportView(textArea_1);
+		textArea_1.setLineWrap(true);
+		textArea_1.setWrapStyleWord(true);
+
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel_3.setBounds(910, 43, 290, 320);
+		add(panel_3);
+		panel_3.setLayout(null);
+
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(10, 11, 268, 296);
+		panel_3.add(scrollPane_2);
+
+		JTextArea textArea_1_1 = new JTextArea();
+		scrollPane_2.setViewportView(textArea_1_1);
+		textArea_1_1.setWrapStyleWord(true);
+		textArea_1_1.setLineWrap(true);
+
+		JButton btnNewButton_1 = new JButton("Encrypt");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (keyTextField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1.setText(vigenere.encrypt(textArea.getText(), key));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
+			}
+		});
+		btnNewButton_1.setBounds(511, 374, 89, 23);
+		add(btnNewButton_1);
+
+		JButton btnNewButton_1_1 = new JButton("Decrypt");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (keyTextField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1_1.setText(vigenere.decrypt(textArea.getText(), key));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
+			}
+		});
+		btnNewButton_1_1.setBounds(610, 374, 89, 23);
+		add(btnNewButton_1_1);
+
+	}
+
+	public void setKey(List<Integer> key) {
+		this.key = key;
+	}
+}

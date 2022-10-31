@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 
@@ -124,6 +126,7 @@ public class RSAvsDES extends JPanel {
 		panel_1.add(btnNewButton);
 
 		textField = new JTextField();
+		textField.setEditable(false);
 		textField.setColumns(10);
 		textField.setBounds(10, 44, 270, 28);
 		panel_1.add(textField);
@@ -139,6 +142,7 @@ public class RSAvsDES extends JPanel {
 		panel_2.setLayout(null);
 
 		textField_1 = new JTextField();
+		textField_1.setEditable(false);
 		textField_1.setToolTipText("Enter number");
 		textField_1.setColumns(10);
 		textField_1.setBounds(10, 44, 270, 28);
@@ -152,14 +156,18 @@ public class RSAvsDES extends JPanel {
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					String fileLink = textField.getText();
-					client.handleInClient(fileLink, "UPLOAD");
-					textArea.setText(client.getPublicKey());
-					textArea_1.setText(client.getPrivateKey());
-					textArea_1_1.setText(client.getSecretKey());
-					String pathFile = client.getPathFileInSerser();
-					File file = new File(pathFile);
-					textField_1.setText(file.getCanonicalPath());
+					if (textField.getText().equals("")) {
+						JOptionPane.showMessageDialog(null, "Please choose the file");
+					} else {
+						String fileLink = textField.getText();
+						client.handleInClient(fileLink, "UPLOAD");
+						textArea.setText(client.getPublicKey());
+						textArea_1.setText(client.getPrivateKey());
+						textArea_1_1.setText(client.getSecretKey());
+						String pathFile = client.getPathFileInSerser();
+						File file = new File(pathFile);
+						textField_1.setText(file.getCanonicalPath());
+					}
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

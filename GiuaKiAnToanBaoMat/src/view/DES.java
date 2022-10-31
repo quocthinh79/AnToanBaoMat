@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 
@@ -49,6 +51,7 @@ public class DES extends JPanel {
 		panel.add(lblNewLabel_1);
 
 		createWithSize = new JTextField();
+		createWithSize.setEditable(false);
 		createWithSize.setToolTipText("Enter number");
 		createWithSize.setBounds(10, 44, 270, 28);
 		panel.add(createWithSize);
@@ -147,15 +150,19 @@ public class DES extends JPanel {
 		JButton btnNewButton_1 = new JButton("Encrypt");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String pathInput = textField.getText();
-				String extension = pathInput.substring(pathInput.lastIndexOf(".") + 1, pathInput.length());
-				des.encryptFile(pathInput, "./OutEncrypt." + extension);
-				File file = new File("./OutEncrypt");
-				try {
-					textField_1.setText(file.getCanonicalPath() + "." + extension);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (createWithSize.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
+				} else {
+					String pathInput = textField.getText();
+					String extension = pathInput.substring(pathInput.lastIndexOf(".") + 1, pathInput.length());
+					des.encryptFile(pathInput, "./OutEncrypt." + extension);
+					File file = new File("./OutEncrypt");
+					try {
+						textField_1.setText(file.getCanonicalPath() + "." + extension);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
@@ -165,16 +172,20 @@ public class DES extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Decrypt");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				des.readKey(createWithSize.getText());
-				String pathInput = textField.getText();
-				String extension = pathInput.substring(pathInput.lastIndexOf(".") + 1, pathInput.length());
-				des.decryptFile(pathInput, "./OutDecrypt." + extension);
-				File file = new File("./OutDecrypt");
-				try {
-					textField_2.setText(file.getCanonicalPath() + "." + extension);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				if (createWithSize.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
+				} else {
+					des.readKey(createWithSize.getText());
+					String pathInput = textField.getText();
+					String extension = pathInput.substring(pathInput.lastIndexOf(".") + 1, pathInput.length());
+					des.decryptFile(pathInput, "./OutDecrypt." + extension);
+					File file = new File("./OutDecrypt");
+					try {
+						textField_2.setText(file.getCanonicalPath() + "." + extension);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});

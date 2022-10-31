@@ -10,6 +10,7 @@ import model.Model;
 
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
@@ -176,8 +177,15 @@ public class MaHoaDichChuyen extends JPanel {
 		JButton btnNewButton = new JButton("Encrypt");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea_1.setText(String
-						.valueOf(displaceModel.encrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+				if (textField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1.setText(String
+							.valueOf(displaceModel.encrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
 			}
 		});
 		btnNewButton.setBounds(512, 384, 89, 23);
@@ -191,8 +199,15 @@ public class MaHoaDichChuyen extends JPanel {
 		JButton btnDecrypt = new JButton("Decrypt");
 		btnDecrypt.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				textArea_1_1.setText(String
-						.valueOf(displaceModel.decrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+				if (textField.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please create key");
+				} else {
+					textArea_1_1.setText(String
+							.valueOf(displaceModel.decrypt(textArea.getText(), Integer.parseInt(textField.getText()))));
+				}
+				if (textArea.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Please enter input");
+				}
 			}
 		});
 		btnDecrypt.setBounds(611, 384, 89, 23);

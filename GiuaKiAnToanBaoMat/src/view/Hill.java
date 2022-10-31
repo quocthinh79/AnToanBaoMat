@@ -2,6 +2,8 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.border.LineBorder;
 
@@ -10,7 +12,12 @@ import model.HillEncoding;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
+
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -120,12 +127,18 @@ public class Hill extends JPanel {
 		JButton createBtn_1 = new JButton("Inverse");
 		createBtn_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String matrix = keyNum1.getText() + " " + keyNum2.getText() + " | " + keyNum3.getText() + " " + keyNum4.getText();
-				String keyNghichDao = hill.kNghichDao(matrix);
-				KInverse1.setText(keyNghichDao.split(" \\| ")[0].split(" ")[0]);
-				KInverse2.setText(keyNghichDao.split(" \\| ")[0].split(" ")[1]);
-				KInverse3.setText(keyNghichDao.split(" \\| ")[1].split(" ")[0]);
-				KInverse4.setText(keyNghichDao.split(" \\| ")[1].split(" ")[1]);
+				if (keyNum1.getText().equals("") || keyNum2.getText().equals("") || keyNum3.getText().equals("")
+						|| keyNum4.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
+				} else {
+					String matrix = keyNum1.getText() + " " + keyNum2.getText() + " | " + keyNum3.getText() + " "
+							+ keyNum4.getText();
+					String keyNghichDao = hill.kNghichDao(matrix);
+					KInverse1.setText(keyNghichDao.split(" \\| ")[0].split(" ")[0]);
+					KInverse2.setText(keyNghichDao.split(" \\| ")[0].split(" ")[1]);
+					KInverse3.setText(keyNghichDao.split(" \\| ")[1].split(" ")[0]);
+					KInverse4.setText(keyNghichDao.split(" \\| ")[1].split(" ")[1]);
+				}
 			}
 		});
 		createBtn_1.setBounds(165, 279, 115, 23);
@@ -162,6 +175,26 @@ public class Hill extends JPanel {
 		textArea.setWrapStyleWord(true);
 
 		JButton btnNewButton = new JButton("From file");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser fileChooser = new JFileChooser();
+				int rVal = fileChooser.showOpenDialog(Hill.this);
+				if (rVal == JFileChooser.APPROVE_OPTION) {
+					try {
+						File file = fileChooser.getSelectedFile();
+						BufferedReader in = new BufferedReader(new FileReader(file));
+						String line = in.readLine();
+						while (line != null) {
+							textArea.setText(textArea.getText() + "\n" + line);
+							line = in.readLine();
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+				}
+			}
+		});
 		btnNewButton.setBounds(102, 286, 89, 23);
 		panel_1.add(btnNewButton);
 
@@ -198,9 +231,15 @@ public class Hill extends JPanel {
 		JButton btnNewButton_1 = new JButton("Encrypt");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String input = textArea.getText();
-				String matrix = keyNum1.getText() + " " + keyNum2.getText() + " | " + keyNum3.getText() + " " + keyNum4.getText();
-				textArea_1.setText(hill.encrypt(input, matrix));
+				if (keyNum1.getText().equals("") || keyNum2.getText().equals("") || keyNum3.getText().equals("")
+						|| keyNum4.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
+				} else {
+					String input = textArea.getText();
+					String matrix = keyNum1.getText() + " " + keyNum2.getText() + " | " + keyNum3.getText() + " "
+							+ keyNum4.getText();
+					textArea_1.setText(hill.encrypt(input, matrix));
+				}
 			}
 		});
 		btnNewButton_1.setBounds(511, 374, 89, 23);
@@ -209,9 +248,15 @@ public class Hill extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Decrypt");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String input = textArea.getText();
-				String matrix = KInverse1.getText() + " " + KInverse2.getText() + " | " + KInverse3.getText() + " " + KInverse4.getText();
-				textArea_1_1.setText(hill.encrypt(input, matrix));
+				if (KInverse1.getText().equals("") || KInverse2.getText().equals("") || KInverse3.getText().equals("")
+						|| KInverse4.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key inverse is empty");
+				} else {
+					String input = textArea.getText();
+					String matrix = KInverse1.getText() + " " + KInverse2.getText() + " | " + KInverse3.getText() + " "
+							+ KInverse4.getText();
+					textArea_1_1.setText(hill.encrypt(input, matrix));
+				}
 			}
 		});
 		btnNewButton_1_1.setBounds(610, 374, 89, 23);

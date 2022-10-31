@@ -25,6 +25,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
 
 public class RSAJPanel extends JPanel {
@@ -73,6 +74,7 @@ public class RSAJPanel extends JPanel {
 		panel.add(scrollPane);
 
 		JTextArea textArea = new JTextArea();
+		textArea.setEditable(false);
 		scrollPane.setViewportView(textArea);
 
 		JScrollPane scrollPane_1 = new JScrollPane();
@@ -80,6 +82,7 @@ public class RSAJPanel extends JPanel {
 		panel.add(scrollPane_1);
 
 		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setEditable(false);
 		scrollPane_1.setViewportView(textArea_1);
 
 		JLabel lblNewLabel = new JLabel("RSA");
@@ -158,25 +161,29 @@ public class RSAJPanel extends JPanel {
 		JButton btnNewButton_1 = new JButton("Encrypt");
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String input = textField.getText();
-				File file = new File(input);
-				if (file.isFile()) {
-					try {
-						String extension = input.substring(input.lastIndexOf(".") + 1, input.length());
-						File fileOut = new File("./OutEncrypt" + "." + extension);
-						rsa.encryptFile(file.getAbsolutePath(), fileOut.getAbsolutePath());
-						textField_1.setText(fileOut.getCanonicalPath());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				if (textArea.getText().equals("") || textArea_1.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
 				} else {
-					try {
-						String stringEncrypt = Base64.getEncoder().encodeToString(rsa.encrypt(input));
-						textField_1.setText(stringEncrypt);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					String input = textField.getText();
+					File file = new File(input);
+					if (file.isFile()) {
+						try {
+							String extension = input.substring(input.lastIndexOf(".") + 1, input.length());
+							File fileOut = new File("./OutEncrypt" + "." + extension);
+							rsa.encryptFile(file.getAbsolutePath(), fileOut.getAbsolutePath());
+							textField_1.setText(fileOut.getCanonicalPath());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						try {
+							String stringEncrypt = Base64.getEncoder().encodeToString(rsa.encrypt(input));
+							textField_1.setText(stringEncrypt);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
 
@@ -188,27 +195,32 @@ public class RSAJPanel extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Decrypt");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String input = textField.getText();
-				File file = new File(input);
-				if (file.isFile()) {
-					try {
-						String extension = input.substring(input.lastIndexOf(".") + 1, input.length());
-						File fileOut = new File("./OutDecrypt" + "." + extension);
-						rsa.decryptFile(file.getAbsolutePath(), fileOut.getAbsolutePath());
-						textField_2.setText(fileOut.getCanonicalPath());
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
+				if (textArea.getText().equals("") || textArea_1.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "Key is empty");
 				} else {
-					try {
-						String stringEncrypt = rsa.decrypt(Base64.getDecoder().decode((input.getBytes())));
-						textField_2.setText(stringEncrypt);
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+					String input = textField.getText();
+					File file = new File(input);
+					if (file.isFile()) {
+						try {
+							String extension = input.substring(input.lastIndexOf(".") + 1, input.length());
+							File fileOut = new File("./OutDecrypt" + "." + extension);
+							rsa.decryptFile(file.getAbsolutePath(), fileOut.getAbsolutePath());
+							textField_2.setText(fileOut.getCanonicalPath());
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					} else {
+						try {
+							String stringEncrypt = rsa.decrypt(Base64.getDecoder().decode((input.getBytes())));
+							textField_2.setText(stringEncrypt);
+						} catch (Exception e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				}
+
 			}
 		});
 		btnNewButton_1_1.setBounds(610, 374, 89, 23);
